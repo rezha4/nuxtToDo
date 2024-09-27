@@ -23,12 +23,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (event.method === "PUT" && id) {
-    const title = await readBody(event);
+    const body = await readBody(event);
     return await prisma.todo.update({
       where: { id },
-      data: {
-        title: title,
-      },
+      data: body,
     });
   }
 });

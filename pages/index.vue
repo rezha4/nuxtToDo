@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <h2>Todo List</h2>
-    <form @submit.prevent="createTodo">
-      <input required v-model="newTodo" placeholder="Name">
-      <button type="submit">Create Todo</button>
+  <div class="grid place-content-center p-12 gap-5">
+    <h1 class="text-4xl text-center font-semibold">Todo List App</h1>
+    <form class="bg-sky-100 p-8 w-[304px] md:w-[420px] rounded-lg flex flex-col gap-4" @submit.prevent="createTodo">
+      <input class="p-1 rounded-lg text-center" required v-model="newTodo" placeholder="Todo">
+      <button class="bg-blue-600 text-white p-1 rounded-lg active:bg-blue-800 hover:scale-105 transition-all ease" type="submit">Create Todo</button>
     </form>
     <ul>
-      <li v-for="todo in todos" :key="todo.id">
-        <input type="checkbox" @click="checkTodo(todo)">
-        {{ todo.title }}
-        <button @click="updateTodo(todo)">Edit</button>
-        <button @click="deleteTodo(todo.id)">Delete</button>
+      <li class="flex gap-3 items-center justify-center space-y-2" v-for="todo in todos" :key="todo.id">
+        <input class="size-6"type="checkbox" :checked="todo.done" @change="checkTodo(todo)">
+        <p class="w-[140px] md:w-64 break-words">{{ todo.title }}</p>
+        <button class="active:bg-emerald-800 hover:scale-105 transition-all ease bg-emerald-600 text-white p-2 rounded-lg" @click="updateTodo(todo)">Edit</button>
+        <button class="active:bg-red-800 hover:scale-105 transition-all ease bg-red-600 text-white p-2 rounded-lg" @click="deleteTodo(todo.id)">Delete</button>
       </li>
     </ul>
   </div>
@@ -41,12 +41,23 @@ async function createTodo() {
   await fetchTodos()
 }
 
+async function checkTodo(todo) {
+  const updatedTodo = { ...todo, done: !todo.done }
+  await fetch(`/api/todos?id=${todo.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updatedTodo),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  await fetchTodos()
+}
+
 async function updateTodo(todo) {
   const updatedTitle = prompt('Enter new title:', todo.title)
+  const updatedTodo = {...todo, title: updatedTitle}
   if (updatedTitle) {
     await fetch(`/api/todos?id=${todo.id}`, {
       method: 'PUT',
-      body: JSON.stringify(updatedTitle),
+      body: JSON.stringify(updatedTodo),
       headers: { 'Content-Type': 'application/json' },
     })
     await fetchTodos()
