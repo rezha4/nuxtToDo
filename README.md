@@ -20,6 +20,7 @@ Finding a hosted postgresql is a bit tricky because they're often not very gener
 I used neon for this project.
 
 ## Hosting on Vercel
+Vercel already has Nuxt.js template & auto detects my git repo as Nuxt.js project. No problem whatsoever on the first deployment (basic install).
 
 ## Coding the To Do App
 ### Learning Vue.js
@@ -36,7 +37,19 @@ I learned:
 - Computed Property, this is a new one - we don't have it in React! This API will receive a function that runs a reactive property through it
 
 ### Learning Nuxt.js
+Nuxt.js is batteries included, have auto imports, and so much good stuff out of the box. Here's what I learned from their docs:
+- Auto import. I don't need to have a bunch of imports on top of my code
+- Built in modules. There are a lot of built in modules, one that I use is <NuxtPage /> where it automatically route based on /pages folder
+- Nuxt CLI. Using npx, I can install required modules easily. Modules I installed are prisma & tailwindcss
+- Server API. /server can handle API requests easily with a built in method: defineEventHandler
 
 ### Installing Prisma
 Luckily, Nuxt.js is batteries included framework - there is a lot of module that should integrate nicely with this, and there is a prisma one for easily doing CRUD with a postgresql database: ```npm install @prisma/nuxt``` from https://nuxt.com/modules/prisma.
 Theoritically, I just need to hook my database and use server components for doing CRUD operations.
+
+### Creating API functionalities (CRUD)
+Server components are still experimental so I decided to use /server folder with ```defineEventHandler```. So I created simple CRUD with prisma: /server/api/todos.ts.
+Then I hit my CRUD api on my pages/index.vue.
+
+### Coding the Front End with TailwindCSS
+Adding tailwindcss is another easy thing to do using Nuxt CLI - Nuxt's module are awesome out of the box. Then I applied basic styling and my code should be ready to deploy.
